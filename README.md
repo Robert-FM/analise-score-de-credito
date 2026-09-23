@@ -2,6 +2,8 @@
 
 Projeto de **credit scoring com Machine Learning** para estimar o risco de inadimplência a partir de dados cadastrais e financeiros de solicitações de crédito. O repositório reúne análise exploratória, treinamento e comparação de modelos e uma interface interativa em Streamlit.
 
+> 🚧 **Status:** em desenvolvimento. Estão previstas a evolução dos modelos de risco de crédito e a futura incorporação de análises relacionadas ao ciclo de mercado.
+
 ## 🎯 Objetivo
 
 O projeto usa a variável `loan_status` como alvo para classificar solicitações de crédito. O fluxo prepara os dados, treina três classificadores, compara as métricas e seleciona o modelo com maior ROC-AUC para uso na aplicação demonstrativa.
@@ -188,7 +190,9 @@ Os valores correspondem à execução registrada em `reports/metrics_summary.csv
 - A aplicação depende de `models/credit_scoring_model.joblib`, criado localmente pelo treinamento.
 - Não foram identificados testes automatizados.
 - `main.py` contém apenas uma mensagem de exemplo e não é o ponto de entrada do treinamento ou da aplicação.
-- Melhorias possíveis: validação cruzada, análise de limiar e custo de erros, explicabilidade, testes e deploy.
+- Adicionar e comparar novos modelos específicos para risco de crédito.
+- Incorporar variáveis, análises e modelos relacionados ao ciclo de mercado, quando os dados e a metodologia forem definidos.
+- Melhorias técnicas possíveis: validação cruzada, análise de limiar e custo de erros, explicabilidade, testes e deploy.
 
 ## 👨‍💻 Autor
 
