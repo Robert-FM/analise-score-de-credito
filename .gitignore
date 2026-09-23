@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+
+# Artefatos gerados localmente pelo treinamento
+models/*.joblib
+
+# Datasets locais — não versionar dados brutos ou processados
+data/**/*.csv
+data/**/*.parquet
+data/**/*.xlsx
