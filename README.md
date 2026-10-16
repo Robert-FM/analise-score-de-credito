@@ -44,7 +44,9 @@ analise-score/
 ├── models/
 │   └── .gitkeep                    # Mantém a pasta; o modelo é gerado localmente
 ├── src/train_model.py            # Treinamento e avaliação
-├── main.py                       # Exemplo mínimo do projeto
+├── tests/
+│   └── test_train_model.py       # Testes automatizados básicos
+├── main.py                       # Ponto de entrada do treinamento
 ├── pyproject.toml
 ├── uv.lock
 ├── .gitignore
@@ -115,6 +117,8 @@ uv add nome-do-pacote
 
 O treinamento não baixa nem versiona o modelo no Git. Ele cria ou atualiza localmente `models/credit_scoring_model.joblib`, que é necessário para executar a aplicação Streamlit. O arquivo é excluído pelo padrão `models/*.joblib` em `.gitignore`.
 
+> ℹ️ **Observação:** o dataset e o modelo são mantidos localmente neste momento. Portanto, após um clone, é necessário disponibilizar o dataset em `data/01-raw/credit_risk_dataset.csv` e executar o treinamento antes de iniciar a aplicação.
+
 ### 🐍 Opção 2 — pip
 
 ```bash
@@ -153,6 +157,22 @@ python src/train_model.py
 
 O script lê `data/01-raw/credit_risk_dataset.csv`, usa divisão estratificada (`test_size=0.2`, `random_state=42`), treina os três modelos e cria o modelo persistido em `models/` e os relatórios em `reports/`.
 
+Também é possível iniciar o treinamento pelo ponto de entrada principal:
+
+```bash
+uv run python main.py
+```
+
+## 🧪 Testes
+
+Execute os testes automatizados com:
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
+Os testes verificam o caminho do dataset, a limpeza dos dados e o funcionamento do pré-processador.
+
 ## 💻 Aplicação interativa
 
 Depois do treinamento:
@@ -188,11 +208,11 @@ Os valores correspondem à execução registrada em `reports/metrics_summary.csv
 ## ⚠️ Limitações e próximos passos
 
 - A aplicação depende de `models/credit_scoring_model.joblib`, criado localmente pelo treinamento.
-- Não foram identificados testes automatizados.
-- `main.py` contém apenas uma mensagem de exemplo e não é o ponto de entrada do treinamento ou da aplicação.
+- O dataset e o modelo não são versionados pelo Git e ainda precisam ser disponibilizados localmente após um clone.
+- Os limiares de risco são demonstrativos e ainda não foram definidos com base no custo financeiro de cada tipo de erro.
 - Adicionar e comparar novos modelos específicos para risco de crédito.
 - Incorporar variáveis, análises e modelos relacionados ao ciclo de mercado, quando os dados e a metodologia forem definidos.
-- Melhorias técnicas possíveis: validação cruzada, análise de limiar e custo de erros, explicabilidade, testes e deploy.
+- Melhorias técnicas possíveis: validação cruzada, calibração das probabilidades, análise de limiar e custo de erros, explicabilidade e deploy.
 
 ## 👨‍💻 Autor
 
