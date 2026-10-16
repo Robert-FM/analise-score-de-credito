@@ -10,10 +10,14 @@ st.set_page_config(page_title="Credit Scoring", layout="centered")
 st.title("Credit Scoring — Previsão de Risco de Inadimplência")
 st.write("Aplicação demonstrativa para estimar a probabilidade de inadimplência de uma solicitação de crédito.")
 
+if not MODEL_PATH.exists():
+    st.error("Modelo não encontrado. Execute `uv run python src/train_model.py` antes de iniciar a aplicação.")
+    st.stop()
+
 model = joblib.load(MODEL_PATH)
 
 age = st.number_input("Idade", 18, 100, 30)
-income = st.number_input("Renda anual", 0, 1_000_000, 60000)
+income = st.number_input("Renda anual", min_value=1, max_value=1_000_000, value=60000)
 home = st.selectbox("Moradia", ["RENT", "OWN", "MORTGAGE", "OTHER"])
 emp = st.number_input("Tempo de emprego", 0.0, 80.0, 5.0)
 intent = st.selectbox("Finalidade do empréstimo", ["EDUCATION", "MEDICAL", "VENTURE", "PERSONAL", "DEBTCONSOLIDATION", "HOMEIMPROVEMENT"])

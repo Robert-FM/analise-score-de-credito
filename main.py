@@ -1,5 +1,8 @@
+from src.train_model import main as train_model
+
+
 def main():
-    print("Hello from analise-score!")
+    train_model()
 
 
 if __name__ == "__main__":

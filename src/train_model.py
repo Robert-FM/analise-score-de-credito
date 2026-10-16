@@ -13,7 +13,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data" / "credit_risk_dataset.csv"
+DATA = ROOT / "data" / "01-raw" / "credit_risk_dataset.csv"
 MODELS = ROOT / "models"
 REPORTS = ROOT / "reports"
 MODELS.mkdir(exist_ok=True)
@@ -22,6 +22,8 @@ REPORTS.mkdir(exist_ok=True)
 TARGET = "loan_status"
 
 def load_data():
+    if not DATA.exists():
+        raise FileNotFoundError(f"Dataset não encontrado: {DATA}")
     df = pd.read_csv(DATA)
     # Remove extremos inconsistentes sem apagar o padrão real do dataset
     df = df[(df["person_age"] <= 100) & (df["person_emp_length"].fillna(0) <= 80)]
@@ -29,7 +31,7 @@ def load_data():
 
 def build_preprocessor(X):
     num_cols = X.select_dtypes(include=["int64", "float64"]).columns.tolist()
-    cat_cols = X.select_dtypes(include=["object", "category"]).columns.tolist()
+    cat_cols = X.select_dtypes(include=["object", "category", "string"]).columns.tolist()
 
     numeric_pipe = Pipeline([
         ("imputer", SimpleImputer(strategy="median")),
@@ -56,9 +58,9 @@ def evaluate(name, model, X_train, X_test, y_train, y_test):
     return {
         "model": name,
         "accuracy": accuracy_score(y_test, pred),
-        "precision": precision_score(y_test, pred),
-        "recall": recall_score(y_test, pred),
-        "f1_score": f1_score(y_test, pred),
+        "precision": precision_score(y_test, pred, zero_division=0),
+        "recall": recall_score(y_test, pred, zero_division=0),
+        "f1_score": f1_score(y_test, pred, zero_division=0),
         "roc_auc": roc_auc_score(y_test, proba),
         "confusion_matrix": confusion_matrix(y_test, pred).tolist(),
         "classification_report": classification_report(y_test, pred, output_dict=True)
